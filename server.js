@@ -17,6 +17,10 @@ io.on('connection', (socket) => {
         console.log(name);
         users[socket.id] = name;
         socket.broadcast.emit('user-message', name);
+        Object.keys(name).forEach((name) => {
+            console.log(name);
+            io.emit('user-connected', name);
+        })
         /* io.emit('user-connected', name); */
     })
     socket.on('disconnect', () => {
@@ -29,6 +33,10 @@ io.on('connection', (socket) => {
     });
 })
 
-server.listen(3000, () => {
+let port = process.env.PORT;
+if(port == null || port == ""){
+    port = 3000;
+}
+server.listen(port, () => {
     console.log('listening on *:3000');
 })
